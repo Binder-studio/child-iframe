@@ -55,7 +55,7 @@ export const MediaViewer = ({ token, chainId }: Props) => {
             height={1080}
           />
         }
-        <div className="absolute top-0 left-0 p-2 cursor-pointer hover:scale-110 transition duration-200 ease-in" onClick={() => toggleCanvas(true)}><PlayCircle className="w-6 h-6 text-white" /></div>
+        <div className="absolute top-0 left-0 p-2 cursor-pointer hover:scale-110 transition duration-200 ease-in" onClick={() => toggleCanvas((c) => !c)}><PlayCircle className="w-6 h-6 text-white" /></div>
       </div>
     </>
   );
