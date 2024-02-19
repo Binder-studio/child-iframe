@@ -1,28 +1,35 @@
 import * as React from "react";
 import { Nft } from "alchemy-sdk";
 import { MediaViewer } from "@/components/ui";
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useNft } from "@/lib/hooks";
 
-const ParentPanelLayout = ({children}: {children: React.ReactNode}) => {
-  return (
-    <div className="bg-white h-full rounded-t-3xl p-6 overflow-scroll">
-      {children}
-    </div>
-  )
-}
+const ParentPanelLayout = ({ children }: { children: React.ReactNode }) => {
+  return <div className="h-full overflow-scroll rounded-t-3xl bg-white p-6">{children}</div>;
+};
 
-const ParentPanel = ({parent}:{parent: Nft}) => {
+const ParentPanel = ({
+  tokenId,
+  contractAddress,
+  chainIdNumber,
+}: {
+  tokenId: string;
+  contractAddress: string;
+  chainIdNumber: number;
+}) => {
+  const { nftMetadata: parent, data: parentNftImages } = useNft({
+    tokenId: parseInt(tokenId as string),
+    contractAddress: contractAddress as `0x${string}`,
+    chainId: chainIdNumber,
+  });
+
   if (!parent) {
-    return (
-      <ParentPanelLayout>
-        No parent found
-      </ParentPanelLayout>
-    )
+    return <ParentPanelLayout>No parent found</ParentPanelLayout>;
   }
 
   return (
     <ParentPanelLayout>
-      <div className="text-2xl py-6">
+      <div className="py-6 text-2xl">
         Owner
         <hr />
       </div>
@@ -33,24 +40,16 @@ const ParentPanel = ({parent}:{parent: Nft}) => {
       </Alert>
       <div className="flex flex-row gap-6">
         <div className="w-[250px]">
-          <MediaViewer token={parent} chainId={1}/>
+          <MediaViewer token={parent as Nft} />
         </div>
-        <div className="flex flex-col grow p-6 gap-3">
+        <div className="flex grow flex-col gap-3 p-6">
           <div className="flex flex-col">
-            <div className="uppercase font-semibold text-xs">
-              Collection
-            </div>
-            <div className="text-2xl font-bold">
-              {parent.contract.name}
-            </div>
+            <div className="text-xs font-semibold uppercase">Collection</div>
+            <div className="text-2xl font-bold">{parent.contract.name}</div>
           </div>
           <div className="flex flex-col">
-          <div className="uppercase font-semibold text-xs">
-              token id
-            </div>
-            <div className="text-2xl font-bold">
-              #{parent.tokenId}
-            </div>
+            <div className="text-xs font-semibold uppercase">token id</div>
+            <div className="text-2xl font-bold">#{parent.tokenId}</div>
           </div>
         </div>
       </div>

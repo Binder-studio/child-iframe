@@ -10,7 +10,6 @@ import { ChevronDownCircle, ChevronUpCircle } from "lucide-react";
 import { Nft } from "alchemy-sdk";
 import { SignatureCanvas } from "@/components/ui";
 
-
 interface TokenParams {
   params: {
     tokenId: string;
@@ -36,18 +35,18 @@ export default function Token({ params, searchParams }: TokenParams) {
     loading: nftMetadataLoading,
     parent,
     isTBA,
-    canvasData
+    canvasData,
   } = useNft({
     tokenId: parseInt(tokenId as string),
     contractAddress: contractAddress as `0x${string}`,
     chainId: chainIdNumber,
   });
 
-  const {nftMetadata: parentNftMetadata, data: parentNftImages} = useNft({
+  const { nftMetadata: parentNftMetadata, data: parentNftImages } = useNft({
     tokenId: parent?.parent_token_id ? parseInt(parent?.parent_token_id) : undefined,
     contractAddress: parent?.parent_contract_address as `0x${string}`,
-    chainId: parent?.parent_chain_id ? parseInt(parent?.parent_chain_id) : undefined
-  })
+    chainId: parent?.parent_chain_id ? parseInt(parent?.parent_chain_id) : undefined,
+  });
 
   useEffect(() => {
     if (!isNil(nftImages) && nftImages.length) {
@@ -84,16 +83,16 @@ export default function Token({ params, searchParams }: TokenParams) {
     return <Skeleton className="h-full w-full bg-slate-400" />;
   }
 
-  const displayCanvas = canvasData && parent?.parent_base_image
+  const displayCanvas = canvasData && parent?.parent_base_image;
   return (
     <>
       {isTBA && parentNftMetadata && (
         <div className="max-w-[1080px]">
           <div
-            className="absolute top-0 left-0 z-10 cursor-pointer rounded-full m-3 p-1 text-zinc-900 transition-opacity duration-500 ease-in opacity-50 hover:opacity-100 bg-zinc-300"
-            onClick={() => toggleShow(t => !t)}
+            className="absolute left-0 top-0 z-10 m-3 cursor-pointer rounded-full bg-zinc-300 p-1 text-zinc-900 opacity-50 transition-opacity duration-500 ease-in hover:opacity-100"
+            onClick={() => toggleShow((t) => !t)}
           >
-            {isShowing ? <ChevronDownCircle /> :<ChevronUpCircle /> }
+            {isShowing ? <ChevronDownCircle /> : <ChevronUpCircle />}
           </div>
           <motion.div
             className={`custom-scroll absolute bottom-0 z-10 w-full max-w-[1080px] overflow-y-auto`}
@@ -101,23 +100,29 @@ export default function Token({ params, searchParams }: TokenParams) {
             variants={variants}
             initial="closed"
           >
-            <ParentPanel parent={parentNftMetadata as Nft} />
+            <ParentPanel
+              tokenId={tokenId}
+              contractAddress={contractAddress}
+              chainIdNumber={chainIdNumber}
+            />
           </motion.div>
         </div>
       )}
-      <div className={`bg-black w-full h-full`}>
+      <div className={`h-full w-full bg-black`}>
         <div
           className={`group relative grid h-full w-full grid-cols-1 grid-rows-1 transition ${
             imagesLoaded ? "" : "blur-xl"
           }
           `}
         >
-          {
-            displayCanvas &&
-            <div className="w-full h-full flex flex-col items-center justify-center">
-            <SignatureCanvas baseImage={parent?.parent_base_image} canvasData={JSON.stringify(canvasData)} />
+          {displayCanvas && (
+            <div className="flex h-full w-full flex-col items-center justify-center">
+              <SignatureCanvas
+                baseImage={parent?.parent_base_image}
+                canvasData={JSON.stringify(canvasData)}
+              />
             </div>
-          }
+          )}
           {!displayCanvas && !isNil(nftImages) ? (
             nftImages.map((image, i) => (
               <img

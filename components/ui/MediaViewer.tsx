@@ -1,4 +1,3 @@
-
 import { useMedia } from "@/lib/hooks";
 import { Nft, OwnedNft } from "alchemy-sdk";
 import clsx from "clsx";
@@ -8,14 +7,11 @@ import CanvasDraw from "react-canvas-draw";
 /* eslint-disable @next/next/no-img-element */
 interface Props {
   token: Nft | OwnedNft;
-  chainId: number;
 }
 
-export const MediaViewer = ({ token, chainId }: Props) => {
-  const { mediaUrl, isVideo } = useMedia({ token, chainId });
+export const MediaViewer = ({ token }: Props) => {
+  const { mediaUrl, isVideo } = useMedia({ token });
   const borderRadius = "rounded-lg";
-
-
 
   if (isVideo) {
     return (
@@ -37,36 +33,41 @@ export const MediaViewer = ({ token, chainId }: Props) => {
   }
 
   if (!mediaUrl) {
-    return <NoMedia className={borderRadius} />
+    return <NoMedia className={borderRadius} />;
   }
 
   return (
     <>
-      <div className="w-full h-full flex flex-col items-center justify-center">
-          <img
-            className="aspect-square rounded-lg object-cover"
-            src={mediaUrl}
-            alt="token image"
-            width={"400px"}
-            height={"400px"}
-          />
+      <div className="flex h-full w-full flex-col items-center justify-center">
+        <img
+          className="aspect-square rounded-lg object-cover"
+          src={mediaUrl}
+          alt="token image"
+          width={"400px"}
+          height={"400px"}
+        />
       </div>
     </>
   );
 };
 
 export const SignatureCanvas = ({
-  baseImage, canvasData
+  baseImage,
+  canvasData,
 }: {
   baseImage?: string;
   canvasData: any;
 }) => {
   const style = {
-    backgroundImage: `${baseImage ? `-webkit-linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.6)), url(${baseImage})` : `bg-black` }`,
+    backgroundImage: `${
+      baseImage
+        ? `-webkit-linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.6)), url(${baseImage})`
+        : `bg-black`
+    }`,
     backgroundSize: `cover`,
     borderRadius: `8px`,
     width: `100%`,
-    height: `100%`
+    height: `100%`,
   };
   return (
     <CanvasDraw
@@ -82,15 +83,16 @@ export const SignatureCanvas = ({
       hideGrid
       style={style}
       hideInterface={true}
+      loadTimeOffset={10}
     />
-  )
-}
+  );
+};
 
 function NoMedia({ className }: { className?: string }) {
   return (
     <div
       className={clsx(
-        "relative flex items-center justify-center bg-gray-200 aspect-square",
+        "relative flex aspect-square items-center justify-center bg-gray-200",
         className
       )}
     >

@@ -4,11 +4,11 @@ import { decodeBase64String } from "@/lib/utils";
 
 interface MediaArgs {
   token?: Nft | OwnedNft;
-  chainId: number;
 }
 
-export function useMedia({ token, chainId }: MediaArgs) {
-  const media: Media | undefined = token?.media && token.media.length > 0 ? token.media[0] : undefined;
+export function useMedia({ token }: MediaArgs) {
+  const media: Media | undefined =
+    token?.media && token.media.length > 0 ? token.media[0] : undefined;
   const isBase64: boolean =
     !media && !!token?.tokenUri?.raw?.startsWith("data:application/json;base64");
   const isVideo = media?.format === "mp4";

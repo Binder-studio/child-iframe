@@ -31,7 +31,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 //   ASSETS: "Assets",
 // };
 
-const GRADIENT = `bg-gradient-to-r from-blue-400 to-emerald-400`
+const GRADIENT = `bg-gradient-to-r from-blue-400 to-emerald-400`;
 
 interface PanelProps {
   className?: string;
@@ -45,9 +45,9 @@ interface PanelProps {
   parent?: {
     contractAddress?: string;
     tokenId?: string;
-  }
-  isFlipped?:boolean;
-  isLoading?:boolean;
+  };
+  isFlipped?: boolean;
+  isLoading?: boolean;
 }
 
 export const Panel = ({
@@ -61,7 +61,7 @@ export const Panel = ({
   chainId,
   parent,
   isFlipped,
-  isLoading
+  isLoading,
 }: PanelProps) => {
   // const [copied, setCopied] = useState(false);
   // const [currentTab, setCurrentTab] = useState(TABS.COLLECTIBLES);
@@ -102,19 +102,16 @@ export const Panel = ({
   // ]);
 
   if (isLoading) {
-    return (
-      <Skeleton className="h-full w-full bg-slate-400" />
-    )
+    return <Skeleton className="h-full w-full bg-slate-400" />;
   }
 
   return (
     <div
       className={clsx(
         className,
-        "custom-scroll h-full overflow-y-auto border-0 relative bg-zinc-900",
+        "custom-scroll relative h-full overflow-y-auto border-0 bg-zinc-900"
       )}
     >
-
       {/* <h1 className="text-sm font-bold uppercase text-black">
         {title}
         {parent && parent.tokenId && <Badge variant="outline">{parent?.tokenId}</Badge>}
@@ -133,34 +130,36 @@ export const Panel = ({
           message={`There are existing approvals on (${approvalTokensCount}) tokens owned by this account. Check approval status on tokenbound.org before purchasing.`}
         />
       ) : null}
-        {tokens && tokens.length ? (
-          <ul className="custom-scroll overflow-y-auto w-full h-full">
-            {tokens.map((t, i) => {
-              const openseaUrl = `${chainIdToOpenseaAssetUrl[chainId]}/${t.contract.address}/${t.tokenId}`;
-              const is1155 = t.tokenType === "ERC1155";
-              const balance = t.balance;
-              return (
-                <li key={`${t.contract.address}-${t.tokenId}-${i}`} className="list-none w-full h-full">
-                  <div className="w-full h-full">
-                    <MediaViewer token={t} chainId={chainId} />
-                    {/* {is1155 && (
+      {tokens && tokens.length ? (
+        <ul className="custom-scroll h-full w-full overflow-y-auto">
+          {tokens.map((t, i) => {
+            const openseaUrl = `${chainIdToOpenseaAssetUrl[chainId]}/${t.contract.address}/${t.tokenId}`;
+            const is1155 = t.tokenType === "ERC1155";
+            const balance = t.balance;
+            return (
+              <li
+                key={`${t.contract.address}-${t.tokenId}-${i}`}
+                className="h-full w-full list-none"
+              >
+                <div className="h-full w-full">
+                  <MediaViewer token={t} />
+                  {/* {is1155 && (
                       <div className="absolute top-4 left-4 text-white rounded-lg py-1 px-2 bg-[#000] bg-opacity-10 backdrop-blur-sm">
                         <div className="text-xl md:text-2xl font-sans font-semibold">
                           x{balance}
                         </div>
                       </div>
                     )} */}
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        ) : (
-          <div className={"h-full"}>
-            <p className="text-center text-sm text-gray-500">No collectibles found</p>
-          </div>
-        )}
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <div className={"h-full"}>
+          <p className="text-center text-sm text-gray-500">No collectibles found</p>
+        </div>
+      )}
     </div>
-
   );
 };
