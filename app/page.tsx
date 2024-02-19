@@ -52,10 +52,14 @@ export default function Token() {
     <>
       <div className="max-w-[1080px]">
         <div
-          className="absolute left-0 top-0 z-10 m-3 cursor-pointer rounded-full bg-zinc-300 p-1 text-zinc-900 opacity-50 transition-opacity duration-500 ease-in hover:opacity-100"
+          className="absolute left-0 top-0 z-10 m-4 cursor-pointer rounded-full bg-zinc-300 text-zinc-900 opacity-50 transition-opacity duration-500 ease-in hover:opacity-100"
           onClick={() => toggleShow((t) => !t)}
         >
-          {isShowing ? <ChevronDownCircle /> : <ChevronUpCircle />}
+          {isShowing ? (
+            <ChevronDownCircle className="h-8 w-8" />
+          ) : (
+            <ChevronUpCircle className="h-8 w-8" />
+          )}
         </div>
         <motion.div
           className={`custom-scroll absolute bottom-0 z-10 w-full max-w-[1080px] overflow-y-auto`}
