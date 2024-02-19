@@ -41,13 +41,13 @@ export default function Token() {
 
   const variants = {
     closed: { y: "100%", transition: { duration: 0.75 }, height: "0%" },
-    open: { y: "0", transition: { duration: 1.9 }, height: "85%" },
+    open: { y: "0", transition: { duration: 1.9, delay: 0.5 }, height: "85%" },
   } as Variants;
 
   if (showLoading) {
     return <Skeleton className="h-full w-full bg-slate-400" />;
   }
-  console.log("rendering");
+
   return (
     <>
       <div className="max-w-[1080px]">
