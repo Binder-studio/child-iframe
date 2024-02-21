@@ -30,7 +30,7 @@ const ParentPanel = ({
   return (
     <ParentPanelLayout>
       <div className="py-6 text-2xl">
-        Owner
+        Signed on
         <hr />
       </div>
       <Alert className="mb-6">
