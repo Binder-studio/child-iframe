@@ -25,7 +25,13 @@ export default function Token() {
     fetcher
   );
 
-  const order = data?.order;
+  const { data: backupData } = useSWR(
+    `${process.env.NEXT_PUBLIC_SECONDARY_APP_URL}/api/campaigns/123/orders/${orderId}`,
+    fetcher
+  );
+  const realData = data || backupData;
+
+  const order = realData?.order;
 
   const collectionNetwork = order?.collectionNetwork;
   const contractAddress = order?.collectionAddress;
