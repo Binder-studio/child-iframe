@@ -1,7 +1,7 @@
 import { useMedia } from "@/lib/hooks";
 import { Nft, OwnedNft } from "alchemy-sdk";
 import clsx from "clsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CanvasDraw from "react-canvas-draw";
 
 /* eslint-disable @next/next/no-img-element */
@@ -51,6 +51,14 @@ export const MediaViewer = ({ token }: Props) => {
   );
 };
 
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height,
+  };
+}
+
 export const SignatureCanvas = ({
   baseImage,
   canvasData,
@@ -58,6 +66,18 @@ export const SignatureCanvas = ({
   baseImage?: string;
   canvasData: any;
 }) => {
+  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+  const [drawed, setDrawed] = useState(false);
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const style = {
     backgroundImage: `${
       baseImage
@@ -69,14 +89,19 @@ export const SignatureCanvas = ({
     width: `100%`,
     height: `100%`,
   };
+
   return (
     <CanvasDraw
       ref={(canvasDraw) => {
         if (canvasDraw && canvasData) {
+          if (drawed) return;
+          setDrawed(true);
           return canvasDraw.loadSaveData(canvasData);
         }
       }}
       brushColor={"white"}
+      canvasHeight={windowDimensions.width > 1080 ? 1080 / 1.1 : windowDimensions.width / 1.1}
+      canvasWidth={windowDimensions.width > 1080 ? 1080 / 1.1 : windowDimensions.width / 1.1}
       brushRadius={0}
       lazyRadius={0}
       disabled

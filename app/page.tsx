@@ -80,18 +80,12 @@ export default function Token() {
           />
         </motion.div>
       </div>
-      <div className={`h-full w-full bg-black`}>
-        <div className={`group relative grid h-full w-full grid-cols-1 grid-rows-1 transition`}>
-          <div className="flex h-full w-full flex-col items-center justify-center">
-            {canvasData && (
-              <SignatureCanvas
-                baseImage={parentBaseImage}
-                canvasData={JSON.stringify(canvasData)}
-              />
-            )}
-          </div>
+
+      {canvasData && (
+        <div className="h-full w-full max-w-[1080px]">
+          <SignatureCanvas baseImage={parentBaseImage} canvasData={JSON.stringify(canvasData)} />
         </div>
-      </div>
+      )}
     </>
   );
 }
